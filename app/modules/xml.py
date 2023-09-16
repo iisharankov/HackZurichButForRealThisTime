@@ -20,4 +20,4 @@ def is_sensitive(filename):
         iban = element[3].text 
         if (firstname and lastname) and(address or iban):
             return True
-        return False 
+    return False 
