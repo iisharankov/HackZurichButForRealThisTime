@@ -1,5 +1,6 @@
 # Python script for md
 import chardet
+import numpy as np
 
 def read_text_from_file(file_path):
     """Reads and returns the content of a file using the appropriate encoding."""
@@ -36,10 +37,8 @@ def is_sensitive(filename, detector):
 
     return False
 
-    
-    
-return detector.is_sensitive(text)
 
+# return detector.is_sensitive(text)
 # Example
 # file_path = "/content/again-tax-environment.md"
 # extracted_text = read_text_from_file(file_path)
