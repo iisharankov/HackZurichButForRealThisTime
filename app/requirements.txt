@@ -1,9 +1,8 @@
 cython==3.0.2   
 numpy==1.25.2
 eyed3
-re
 opencv-python
 beautifulsoup4
-docx 
+docx=0.2.4
 exceptions 
 xml 

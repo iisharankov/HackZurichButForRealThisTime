@@ -1,5 +1,3 @@
-def text_is_sensitive(textdata):
-
-    
+def is_sensitive(textdata):
 
     return False 
