@@ -1,7 +1,5 @@
 import re
 import spacy
-from phonenumbers import parse, is_valid_number, NumberParseException
-
 import const
 
 class SensitiveDataDetector:
@@ -48,8 +46,6 @@ class SensitiveDataDetector:
         self.indirect_flag = 0
         self.potential_indirect_flag = 0 
 
-
-
     def check_regex(self, text):
         for pattern in self.rsa_patterns.values():
             self.rsa_flag += len(re.findall(pattern, text))
@@ -63,13 +59,14 @@ class SensitiveDataDetector:
         # if self.direct_flag == 0:
         #     self.direct_flag +=  self.has_full_name(text)
 
+        if self.indirect_flag == 0:
+            self.indirect_flag += self.has_nationality(text)
 
         for pattern in self.indirect_patterns.values():
             self.indirect_flag += len(re.findall(pattern, text))
         
         if self.direct_flag and self.indirect_flag:
             return
-        
 
         for pattern in self.potential_indirect_patterns.values():
             count = sum(1 for _ in re.finditer(pattern, text))
@@ -78,7 +75,6 @@ class SensitiveDataDetector:
             if self.potential_indirect_flag >= const.RE_ITER_LIMIT:
                 self.indirect_flag = const.RE_ITER_LIMIT
                 break
-
 
             # self.potential_indirect_flag += len(re.findall(pattern, text)) 
         
@@ -93,12 +89,19 @@ class SensitiveDataDetector:
         for name in names:
             if len(name.split()) >= 2:
                 return 1
+
         return 0
 
+    def has_nationality(self, text): 
+        text = text.lower()
+        for nationality in const.NATIONALITIES: 
+            if nationality.lower() in text: 
+                return 1
+
+        return 0
 
     def is_sensitive(self, text):
         self.reset_flags()
-
 
         # First do some fast regex tests!
         regex_result = self.check_regex(text)
