@@ -7,11 +7,7 @@ class SensitiveDataDetector:
     def __init__(self):
 
         # Create flags
-        self.rsa_flag = 0
-        self.direct_flag = 0
-        self.indirect_flag = 0
-        self.potential_indirect_flag = 0 
-
+        self.reset_flags()
 
         self.nlp = spacy.load("en_core_web_sm")
 
@@ -20,10 +16,8 @@ class SensitiveDataDetector:
         }
 
         self.direct_patterns = {
-            # "Full Name": r"\b[A-Z][a-z]+\s[A-Z][a-z]+\b",
             "Email Address": r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}",
             "Company name": r"\b[A-Z][a-z]+\s[A-Z][a-z]+(Co|Corp|Company|Inc|Ltd)\b",
-            "RSA private key": r"-----BEGIN RSA PRIVATE KEY-----",  # simplified pattern
         }
 
         self.indirect_patterns = {
@@ -47,14 +41,31 @@ class SensitiveDataDetector:
         self.potential_indirect_flag = 0 
 
     def check_regex(self, text):
+
         for pattern in self.rsa_patterns.values():
             self.rsa_flag += len(re.findall(pattern, text))
         
+        
         if self.rsa_flag:
             return
+        
+        for match_pattern, match_flag in [(self.direct_patterns, self.direct_flag), 
+                                          (self.indirect_patterns, self.indirect_flag), 
+                                          (self.potential_indirect_patterns, self.potential_indirect_flag)]:
+            
 
-        for pattern in self.direct_patterns.values():
-            self.direct_flag += len(re.findall(pattern, text))
+
+            for pattern in match_pattern.values():
+                regex_search = re.search(pattern, text)
+                match_flag += 1 if regex_search else 0
+
+
+
+
+        # for pattern in self.direct_patterns.values():
+        #     self.direct_flag += len(re.findall(pattern, text))
+        #     if len(re.findall(pattern, text)) > 0:
+        #         print(re.search(pattern, text))
 
         # if self.direct_flag == 0:
         #     self.direct_flag +=  self.has_full_name(text)
@@ -62,23 +73,22 @@ class SensitiveDataDetector:
         if self.indirect_flag == 0:
             self.indirect_flag += self.has_nationality(text)
 
-        for pattern in self.indirect_patterns.values():
-            self.indirect_flag += len(re.findall(pattern, text))
+        # for pattern in self.indirect_patterns.values():
+        #     self.indirect_flag += len(re.findall(pattern, text))
         
-        if self.direct_flag and self.indirect_flag:
-            return
+        # if self.direct_flag and self.indirect_flag:
+            # return
 
-        for pattern in self.potential_indirect_patterns.values():
-            count = sum(1 for _ in re.finditer(pattern, text))
-            self.potential_indirect_flag += min(count, const.RE_ITER_LIMIT)
-            # Exit early if we've already reached the limit
-            if self.potential_indirect_flag >= const.RE_ITER_LIMIT:
-                self.indirect_flag = const.RE_ITER_LIMIT
-                break
+        # for pattern in self.potential_indirect_patterns.values():
+        #     count = sum(1 for _ in re.finditer(pattern, text))
+        #     self.potential_indirect_flag += min(count, const.RE_ITER_LIMIT)
+        #     # Exit early if we've already reached the limit
+        #     if self.potential_indirect_flag >= const.RE_ITER_LIMIT:
+        #         self.indirect_flag = const.RE_ITER_LIMIT
+        #         break
 
             # self.potential_indirect_flag += len(re.findall(pattern, text)) 
-        
-        print(self.rsa_flag, self.direct_flag, self.indirect_flag, self.potential_indirect_flag)
+        print(f"{self.rsa_flag}, {self.direct_flag}, {self.indirect_flag}, {self.potential_indirect_flag}")
 
     
     def has_full_name(self, text):
@@ -107,11 +117,6 @@ class SensitiveDataDetector:
         regex_result = self.check_regex(text)
         if regex_result:
             return True
-    
-        # direct, indirect, potential_indirect = self.detect_data(text)
-
-        # if direct and (indirect or potential_indirect):
-        #     return True
 
         return [self.rsa_flag, self.direct_flag, self.indirect_flag, self.potential_indirect_flag] 
 

@@ -50,8 +50,8 @@ def classifier(file_path, detector):
             return html.is_sensitive(file_path, detector)
         # case "jpg":
             # return jpg.is_sensitive(file_path, detector)
-        # case "log": # TODO: Slow but works
-            # return log.is_sensitive(file_path, detector)
+        case "log": # TODO: Slow but works
+            return log.is_sensitive(file_path, detector)
         case "md":
             return md.is_sensitive(file_path, detector)
         # case "mp3": # TODO: Broken, Julia will look into it
@@ -78,8 +78,8 @@ def classifier(file_path, detector):
             return xml.is_sensitive(file_path, detector)
         # case "zip":
             # return zip.is_sensitive(file_path, detector)
-        case _:
-            return other.is_sensitive(file_path, detector)
+        # case _:
+            # return other.is_sensitive(file_path, detector)
 
     return None
     
@@ -118,8 +118,9 @@ def main():
 
         time_tot = time.time() - start
         print(f"total time was {time_tot}")
+        
         # Convert dictionary to DataFrame
-        df = pd.DataFrame(list(labels.items()), columns=['key', 'value'])
+        df = pd.DataFrame(list(labels.items()), columns=['key', 'value', 'raw'])
 
         # Save the DataFrame to a CSV
         df.to_csv(script_dir_path / 'results' / 'crawler_results.csv', index=False)
