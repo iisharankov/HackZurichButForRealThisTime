@@ -4,3 +4,6 @@ eyed3
 re
 opencv-python
 beautifulsoup4
+docx 
+exceptions 
+cryptography
