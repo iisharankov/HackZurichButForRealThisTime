@@ -1,0 +1,7 @@
+cython==3.0.2   
+numpy==1.25.2
+eyed3
+re
+opencv-python
+pytesseract
+
