@@ -58,8 +58,8 @@ def classifier(file_path, detector):
             # return mp3.is_sensitive(file_path, detector)
         case "msg":
             return msg.is_sensitive(file_path, detector)
-        # case "pdf":
-        #     return pdf.is_sensitive(file_path, detector)
+        case "pdf":
+            return pdf.is_sensitive(file_path, detector)
         case "pem":
             return pem.is_sensitive(file_path, detector)
         # case "png":

@@ -8,7 +8,8 @@ from const import *
 def regex_filter(string): 
     return {
         "email": re.search(PATTERN_EMAIL, string) is not None, 
-        "iban": re.search(PATTERN_IBAN, string) is not None
+        "iban": re.search(PATTERN_IBAN, string) is not None,
+        "rsa": re.search(PATTERN_RSA, string) is not None
     }
 
 def check_is_sensitive(df, filename):

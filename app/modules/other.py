@@ -14,8 +14,9 @@ def read_text_from_file(file_path):
     
     for encoding in encodings_to_try:
         try:
-            content = rawdata.decode(encoding) 
-            return content
+            if encoding is not None:
+                content = rawdata.decode(encoding) 
+                return content
         except UnicodeDecodeError:
             pass
 
@@ -25,12 +26,9 @@ def is_sensitive(filename, detector):
     # here: produce list of lines  from html 
 
     doc = read_text_from_file(filename)
-    counter = np.array([0,0,0,0])
 
-    for line in doc:
-        new_count = np.array(detector.is_sensitive(line))
-        counter += new_count 
-        if (counter[0] > 0) or (counter[1]+counter[2] > 1) or (counter[1]+counter[3] > 1):
-            return True 
+    counter = np.array(detector.is_sensitive(doc))
+    if (counter[0] > 0) or (counter[1]+counter[2] > 1) or (counter[1]+counter[3] > 1):
+        return True 
 
     return False
