@@ -6,3 +6,4 @@ beautifulsoup4
 docx=0.2.4
 exceptions 
 xml 
+spacy 
