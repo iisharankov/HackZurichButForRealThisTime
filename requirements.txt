@@ -1,0 +1,15 @@
+cython==3.0.2   
+numpy==1.25.2
+pandas==1.5.3
+openpyxl
+eyeD3
+opencv-python
+pytesseract
+tesseract
+spacy 
+phonenumbers
+easyocr
+beautifulsoup4
+python-docx==0.8.11
+# exceptions 
+cryptography
