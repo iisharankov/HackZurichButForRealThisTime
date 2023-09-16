@@ -38,7 +38,7 @@ from modules import csv, db, docx, html, jpg, log, md, mp3, msg, other, pdf, pem
 
 def classifier(file_path, detector):
     # Check the data type
-    for extension in const.file_types:
+    for extension in const.FILE_TYPES:
         
 
         match file_path.suffix[1:]:
