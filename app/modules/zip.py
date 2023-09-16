@@ -40,10 +40,7 @@ def is_sensitive(filename, detector):
 
     return False
 
-    
-    
-   
-    return detector.is_sensitive(text)
+return detector.is_sensitive(text)
 
 # # Example
 # zip_file_path = "/content/budget-game-their.zip"
