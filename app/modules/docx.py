@@ -16,7 +16,4 @@
 
 #     return False
 
-    
-    
-   
-#     return detector.is_sensitive(text)
+# return detector.is_sensitive(text)
