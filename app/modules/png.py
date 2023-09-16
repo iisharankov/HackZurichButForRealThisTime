@@ -1,13 +1,15 @@
 # Python script for png
 
-import cv2
-import pytesseract
+from cv2 import imread
+from pytesseract import image_to_string
 from text_analyzer import text_is_sensitive
+import easyocr
 
 def is_sensitive(filename):
 
-    img = cv2.imread(filename)   
-    text = pytesseract.image_to_string(img)
+    reader = easyocr.Reader(['en'])
+    result = reader.readtext('filename', detail = 0)
+
     
-    return text_is_sensitive(text) 
+    return text_is_sensitive(result) 
 

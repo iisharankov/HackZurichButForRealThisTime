@@ -4,4 +4,4 @@ eyed3
 re
 opencv-python
 pytesseract
-
+tesseract
