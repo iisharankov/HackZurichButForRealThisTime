@@ -14,6 +14,8 @@ def is_sensitive(filename, detector):
         if (counter[0] > 0) or (counter[1]+counter[2] > 1) or (counter[1]+counter[3] > 1):
             return True 
 
+    return False
+
     
     
    
