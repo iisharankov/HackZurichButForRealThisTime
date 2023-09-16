@@ -1,19 +1,22 @@
 # Python script for docx
 import docx 
 import numpy as np
+import subprocess
+import sys
 
 def is_sensitive(filename, detector):
     # here: produce list of lines  from html 
+    cmd = ["sh", "-c",
+    "unzip -p some.docx word/document.xml | sed -e 's/<[^>]\{1,\}>//g; s/[^[:print:]]\{1,\}//g'"]
 
-    doc = docx.Document("your_file.docx")
-    counter = np.array([0,0,0,0])
+    # Execute the command
+    result = subprocess.run(cmd, capture_output=True, text=True)
 
-    for paragraph in doc:
-        new_count = np.array(detector.is_sensitive(paragraph.text))
-        counter += new_count 
-        if (counter[0] > 0) or (counter[1]+counter[2] > 1) or (counter[1]+counter[3] > 1):
-            return True 
+    # Check for errors
+    result.check_returncode()
+
+    counter = np.array(detector.is_sensitive(result.stdout))
+    if (counter[0] > 0) or (counter[1]+counter[2] > 1) or (counter[1]+counter[3] > 1):
+        return True 
 
     return False
-
-# return detector.is_sensitive(text)
