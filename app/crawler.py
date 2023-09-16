@@ -21,49 +21,114 @@ things are satisfied:
 import os
 from pathlib import Path
 import pickle
+import importlib
+import time
+
+import pandas as pd
+
+import const
+import model
+import modules
+from modules import csv, db, docx, html, jpg, log, md, mp3, msg, other, pdf, pem, png, ps1, pub, py, txt, xlsx, xml, zip
 
 
-def save_dict_as_pickle(labels, filename):
-    with open(filename, "wb") as handle:
-        pickle.dump(labels, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 
-def classifier(file_path):
+
+
+def classifier(file_path, detector):
     # Check the data type
-    if file_path.suffix == ".txt":
-        # Open the file to read out the content
-        with open(file_path) as f:
-            file_content = f.read()
-            # If the file contains the word "hello" label it as true
-            if file_content.find("hello") != -1:
-                return "True"
-            else:
-                return "False"
-    else:
-        # If it is not a `.txt` file the set the label to "review"
-        return "review"
+    for extension in const.file_types:
+        
+
+        match file_path.suffix[1:]:
+            # case "csv":
+            #     return csv.is_sensitive(file_path, detector)
+            # case "db":
+            #     return db.is_sensitive(file_path, detector)
+            # case "docx":
+            #     return docx.is_sensitive(file_path, detector)
+            # case "html":
+            #     return html.is_sensitive(file_path, detector)
+            # case "jpg":
+            #     return jpg.is_sensitive(file_path, detector)
+            # case "log":
+            #     return log.is_sensitive(file_path, detector)
+            # case "md":
+            #     return md.is_sensitive(file_path, detector)
+            # case "mp3":
+            #     return mp3.is_sensitive(file_path, detector)
+            # case "msg":
+                # return msg.is_sensitive(file_path, detector)
+            case "pdf":
+                return pdf.is_sensitive(file_path, detector)
+            # case "pem":
+            #     return pem.is_sensitive(file_path, detector)
+            # case "png":
+            #     return png.is_sensitive(file_path, detector)
+            # case "ps1":
+            #     return ps1.is_sensitive(file_path, detector)
+            # case "pub":
+            #     return pub.is_sensitive(file_path, detector)
+            # case "py":
+            #     return py.is_sensitive(file_path, detector)
+            # case "txt":
+            #     return txt.is_sensitive(file_path, detector)
+            # case "xlsx":
+            #     return xlsx.is_sensitive(file_path, detector)
+            # case "xml":
+            #     return xml.is_sensitive(file_path, detector)
+            # case "zip":
+            #     return zip.is_sensitive(file_path, detector)
+            # case _:
+            #     return other.is_sensitive(file_path, detector)
+
+    return None
+    
 
 
 def main():
+
+    # Init detector
+    detector = model.SensitiveDataDetector()
+
     # Get the path of the directory where this script is in
     script_dir_path = Path(os.path.realpath(__file__)).parents[1]
+
     # Get the path containing the files that we want to label
     file_dir_path = script_dir_path / "files"
 
+
+    # print(file_dir_path)
     if os.path.exists(file_dir_path):
+
         # Initialize the label dictionary
         labels = {}
 
+        start = time.time()
         # Loop over all items in the file directory
         for file_name in os.listdir(file_dir_path):
             file_path = file_dir_path / file_name
-            labels[file_name] = classifier(file_path)
 
-        # Save the label dictionary as a Pickle file
-        save_dict_as_pickle(labels, script_dir_path / 'results' / 'crawler_labels.pkl')
+            result = classifier(file_path, detector)
+
+            # add result to labels
+            if result is None:
+                result = "Review"
+            labels[file_name] = result
+
+
+        time_tot = time.time() - start
+        print(f"total time was {time_tot}")
+        # Convert dictionary to DataFrame
+        df = pd.DataFrame(list(labels.items()), columns=['key', 'value'])
+
+        # Save the DataFrame to a CSV
+        df.to_csv(script_dir_path / 'results' / 'crawler_results.csv', index=False)
+
     else:
         print("Please place the files in the corresponding folder")
 
-
+    # print(labels)
 if __name__ == "__main__":
     main()

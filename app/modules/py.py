@@ -37,8 +37,3 @@ def is_sensitive(filename, detector):
     return False
 
     
-return detector.is_sensitive(text)
-# Example
-# file_path = "/content/begin-wonder-center-consumer-my-task.log"
-# extracted_text = read_text_from_file(file_path)
-# print(extracted_text)

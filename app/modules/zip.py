@@ -40,14 +40,4 @@ def is_sensitive(filename, detector):
 
     return False
 
-return detector.is_sensitive(text)
-
-# # Example
-# zip_file_path = "/content/budget-game-their.zip"
-# text_content = extract_text_from_zip(zip_file_path)
-# if text_content:
-#     print(text_content)
-# else:
-#     print("No text file found inside the zip (and nested zips).")
-
 
