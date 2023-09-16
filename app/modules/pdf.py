@@ -63,12 +63,11 @@ def is_sensitive(file_path, detector):
 
     
     counter = np.array([0,0,0,0])
-
-    for line in text:
-        new_count = np.array(detector.is_sensitive(line))
-        counter += new_count
-        if (counter[0] > 0) or (counter[1]+counter[2] > 1) or (counter[1]+counter[3] > 1):
-            return True 
+    new_count = np.array(detector.is_sensitive(text))
+    counter += new_count
+    
+    if (counter[0] > 0) or (counter[1]+counter[2] > 1) or (counter[1]+counter[3] > 1):
+        return True 
 
     return False 
     

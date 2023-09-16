@@ -6,7 +6,7 @@ from xml.etree import cElementTree as ET
 import os 
 from bs4 import BeautifulSoup
 
-def is_sensitive(filename):
+def is_sensitive(filename, _):
 
     with open(filename, encoding='ISO-8859-1') as f:
         rawdata = f.read()
