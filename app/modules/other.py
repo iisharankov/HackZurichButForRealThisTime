@@ -14,7 +14,7 @@ def read_text_from_file(file_path):
     
     for encoding in encodings_to_try:
         try:
-            content = rawdata.decode(encoding)
+            content = rawdata.decode(encoding) 
             return content
         except UnicodeDecodeError:
             pass

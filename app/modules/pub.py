@@ -2,6 +2,7 @@
 import pandas as pd
 import re
 import spacy 
+import chardet
 from const import *
 
 def regex_filter(string): 
