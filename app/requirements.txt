@@ -6,4 +6,4 @@ opencv-python
 beautifulsoup4
 docx 
 exceptions 
-cryptography
+xml 
