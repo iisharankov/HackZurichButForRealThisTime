@@ -38,50 +38,48 @@ from modules import csv, db, docx, html, jpg, log, md, mp3, msg, other, pdf, pem
 
 def classifier(file_path, detector):
     # Check the data type
-    for extension in const.FILE_TYPES:
-        
 
-        match file_path.suffix[1:]:
-            # case "csv":
-            #     return csv.is_sensitive(file_path, detector)
-            # case "db":
-            #     return db.is_sensitive(file_path, detector)
-            # case "docx":
-            #     return docx.is_sensitive(file_path, detector)
-            # case "html":
-            #     return html.is_sensitive(file_path, detector)
-            # case "jpg":
-            #     return jpg.is_sensitive(file_path, detector)
-            # case "log":
-            #     return log.is_sensitive(file_path, detector)
-            # case "md":
-            #     return md.is_sensitive(file_path, detector)
-            # case "mp3":
-            #     return mp3.is_sensitive(file_path, detector)
-            # case "msg":
-                # return msg.is_sensitive(file_path, detector)
-            case "pdf":
-                return pdf.is_sensitive(file_path, detector)
-            # case "pem":
-            #     return pem.is_sensitive(file_path, detector)
-            # case "png":
-            #     return png.is_sensitive(file_path, detector)
-            # case "ps1":
-            #     return ps1.is_sensitive(file_path, detector)
-            # case "pub":
-            #     return pub.is_sensitive(file_path, detector)
-            # case "py":
-            #     return py.is_sensitive(file_path, detector)
-            # case "txt":
-            #     return txt.is_sensitive(file_path, detector)
-            # case "xlsx":
-            #     return xlsx.is_sensitive(file_path, detector)
-            # case "xml":
-            #     return xml.is_sensitive(file_path, detector)
-            # case "zip":
-            #     return zip.is_sensitive(file_path, detector)
-            # case _:
-            #     return other.is_sensitive(file_path, detector)
+    match file_path.suffix[1:]:
+        case "csv":
+            return csv.is_sensitive(file_path, detector)
+        case "db":
+            return db.is_sensitive(file_path, detector)
+        case "docx":
+            return docx.is_sensitive(file_path, detector)
+        case "html":
+            return html.is_sensitive(file_path, detector)
+        # case "jpg":
+            # return jpg.is_sensitive(file_path, detector)
+        # case "log": # TODO: Slow but works
+            # return log.is_sensitive(file_path, detector)
+        case "md":
+            return md.is_sensitive(file_path, detector)
+        # case "mp3": # TODO: Broken, Julia will look into it
+            # return mp3.is_sensitive(file_path, detector)
+        case "msg":
+            return msg.is_sensitive(file_path, detector)
+        # case "pdf":
+        #     return pdf.is_sensitive(file_path, detector)
+        case "pem":
+            return pem.is_sensitive(file_path, detector)
+        # case "png":
+            # return png.is_sensitive(file_path, detector)
+        case "ps1":
+            return ps1.is_sensitive(file_path, detector)
+        case "pub":
+            return pub.is_sensitive(file_path, detector)
+        case "py":
+            return py.is_sensitive(file_path, detector)
+        case "txt":
+            return txt.is_sensitive(file_path, detector)
+        case "xlsx":
+            return xlsx.is_sensitive(file_path, detector)
+        case "xml":
+            return xml.is_sensitive(file_path, detector)
+        # case "zip":
+            # return zip.is_sensitive(file_path, detector)
+        case _:
+            return other.is_sensitive(file_path, detector)
 
     return None
     
