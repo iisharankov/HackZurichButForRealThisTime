@@ -19,7 +19,7 @@ class SensitiveDataDetector:
         self.direct_patterns = {
             # "Full Name": r"\b[A-Z][a-z]+\s[A-Z][a-z]+\b",
             "Email Address": r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}",
-            "Company name": r"\b[A-Z][a-z]+\s[A-Z][a-z]+(Co|Corp|Company|Inc|Ltd)\b",
+            "Company name": r"\b[A-Z][a-z]+\s[A-Z][a-z]+(Co|Corp|Company|Inc|Ltd|GmbH|AG)s\b",
             "RSA private key": r"-----BEGIN RSA PRIVATE KEY-----",  # simplified pattern
         }
 
