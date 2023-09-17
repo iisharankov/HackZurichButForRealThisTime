@@ -1,13 +1,21 @@
 # Python script for jpg
 
 import numpy as np
-
 import helpers
+import cv2
 
-def is_sensitive(filename, detector, reader):
-    result = reader.readtext(str(filename), detail = 0)
+def is_sensitive(filename, detector):
+    small_threshold = 0.3
+    abs_threshold = 0.5
+    imgArr = cv2.imread(filename)
+    background = np.array([255, 255, 255])
+
+    percent = (imgArr == background).sum() / imgArr.size
+
+    if percent >= abs_threshold:
+        return True
+    if percent >= small_threshold:
+        return "Review"
+    else:
+        return False 
     
-    counter = np.array(detector.is_sensitive(result))
-    return helpers.check_valid_sensitivities(counter)
-
-
