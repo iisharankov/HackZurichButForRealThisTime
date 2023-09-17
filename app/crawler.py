@@ -24,11 +24,12 @@ import pickle
 import importlib
 import time
 
+
+import easyocr
 import pandas as pd
 
 import const
 import model
-import modules
 from modules import csv, db, docx, html, jpg, log, md, mp3, msg, other, pdf, pem, png, ps1, pub, py, txt, xlsx, xml, zip
 
 
@@ -36,7 +37,7 @@ from modules import csv, db, docx, html, jpg, log, md, mp3, msg, other, pdf, pem
 
 
 
-def classifier(file_path, detector):
+def classifier(file_path, detector, jpg_reader):
     # Check the data type
 
     match file_path.suffix[1:]:
@@ -48,8 +49,8 @@ def classifier(file_path, detector):
             return docx.is_sensitive(file_path, detector)
         case "html":
             return html.is_sensitive(file_path, detector)
-        # case "jpg":
-            # return jpg.is_sensitive(file_path, detector)
+        #case "jpg":
+        #    return jpg.is_sensitive(file_path, detector, jpg_reader)
         case "log": # TODO: Slow but works
             return log.is_sensitive(file_path, detector)
         case "md":
@@ -76,8 +77,8 @@ def classifier(file_path, detector):
             return xlsx.is_sensitive(file_path, detector)
         case "xml":
             return xml.is_sensitive(file_path, detector)
-        # case "zip":
-            # return zip.is_sensitive(file_path, detector)
+        #case "zip":
+        #    return zip.is_sensitive(file_path, detector)
         # case _:
             # return other.is_sensitive(file_path, detector)
 
@@ -89,6 +90,9 @@ def main():
 
     # Init detector
     detector = model.SensitiveDataDetector()
+
+    # Init jpeg reader
+    jpg_reader = easyocr.Reader(['en'])
 
     # Get the path of the directory where this script is in
     script_dir_path = Path(os.path.realpath(__file__)).parents[1]
@@ -108,7 +112,7 @@ def main():
         for file_name in os.listdir(file_dir_path):
             file_path = file_dir_path / file_name
 
-            result = classifier(file_path, detector)
+            result = classifier(file_path, detector, jpg_reader)
 
             # add result to labels
             if result is None:
@@ -118,9 +122,9 @@ def main():
 
         time_tot = time.time() - start
         print(f"total time was {time_tot}")
-        
+
         # Convert dictionary to DataFrame
-        df = pd.DataFrame(list(labels.items()), columns=['key', 'value', 'raw'])
+        df = pd.DataFrame(list(labels.items()), columns=['key', 'value'])
 
         # Save the DataFrame to a CSV
         df.to_csv(script_dir_path / 'results' / 'crawler_results.csv', index=False)

@@ -8,7 +8,6 @@ class SensitiveDataDetector:
 
         # Create flags
         self.reset_flags()
-
         self.nlp = spacy.load("en_core_web_sm")
 
         self.rsa_patterns = {
@@ -45,27 +44,32 @@ class SensitiveDataDetector:
         for pattern in self.rsa_patterns.values():
             self.rsa_flag += len(re.findall(pattern, text))
         
-        
         if self.rsa_flag:
             return
         
-        for match_pattern, match_flag in [(self.direct_patterns, self.direct_flag), 
-                                          (self.indirect_patterns, self.indirect_flag), 
-                                          (self.potential_indirect_patterns, self.potential_indirect_flag)]:
+
+        break_outer = False
+
+        for match_pattern, flag_name in [('direct_patterns', 'direct_flag'), 
+                                        ('indirect_patterns', 'indirect_flag'), 
+                                        ('potential_indirect_patterns', 'potential_indirect_flag')]:
             
+            # Start going through regex patterns 
+            for pattern in getattr(self, match_pattern).values():
+                
+                # Before each new pattern, check if we satisfy exit conditions to know we've found sensitive data
+                if self.direct_flag > 0 and (self.indirect_flag > 0 or self.potential_indirect_flag > 0):
+                    break_outer = True
+                    break
 
-
-            for pattern in match_pattern.values():
                 regex_search = re.search(pattern, text)
-                match_flag += 1 if regex_search else 0
+                
+                if regex_search:
+                    current_value = getattr(self, flag_name)
+                    setattr(self, flag_name, current_value + 1)
 
-
-
-
-        # for pattern in self.direct_patterns.values():
-        #     self.direct_flag += len(re.findall(pattern, text))
-        #     if len(re.findall(pattern, text)) > 0:
-        #         print(re.search(pattern, text))
+            if break_outer:
+                break
 
         # if self.direct_flag == 0:
         #     self.direct_flag +=  self.has_full_name(text)
@@ -73,22 +77,7 @@ class SensitiveDataDetector:
         if self.indirect_flag == 0:
             self.indirect_flag += self.has_nationality(text)
 
-        # for pattern in self.indirect_patterns.values():
-        #     self.indirect_flag += len(re.findall(pattern, text))
-        
-        # if self.direct_flag and self.indirect_flag:
-            # return
 
-        # for pattern in self.potential_indirect_patterns.values():
-        #     count = sum(1 for _ in re.finditer(pattern, text))
-        #     self.potential_indirect_flag += min(count, const.RE_ITER_LIMIT)
-        #     # Exit early if we've already reached the limit
-        #     if self.potential_indirect_flag >= const.RE_ITER_LIMIT:
-        #         self.indirect_flag = const.RE_ITER_LIMIT
-        #         break
-
-            # self.potential_indirect_flag += len(re.findall(pattern, text)) 
-        print(f"{self.rsa_flag}, {self.direct_flag}, {self.indirect_flag}, {self.potential_indirect_flag}")
 
     
     def has_full_name(self, text):
@@ -113,11 +102,12 @@ class SensitiveDataDetector:
     def is_sensitive(self, text):
         self.reset_flags()
 
-        # First do some fast regex tests!
+        # Do some fast regex tests!
         regex_result = self.check_regex(text)
         if regex_result:
             return True
 
+        print(self.rsa_flag, self.direct_flag, self.indirect_flag, self.potential_indirect_flag)
         return [self.rsa_flag, self.direct_flag, self.indirect_flag, self.potential_indirect_flag] 
 
 
