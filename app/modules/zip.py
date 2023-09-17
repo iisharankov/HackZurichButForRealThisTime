@@ -27,9 +27,7 @@ def extract_text_from_zip(zip_path):
 
 
 def is_sensitive(filename, detector):
-    # here: produce list of lines  from html 
-
     doc = process_zip(filename)
 
-    conuter = np.array(detector.is_sensitive(doc))
+    counter = np.array(detector.is_sensitive(doc))
     return helpers.check_valid_sensitivities(counter)

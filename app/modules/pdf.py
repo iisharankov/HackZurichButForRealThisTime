@@ -3,7 +3,7 @@ import PyPDF2
 
 
 import subprocess
-
+import helpers
 import numpy as np
 
 def extract_text_from_pdf(pdf_path):

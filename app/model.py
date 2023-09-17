@@ -17,6 +17,7 @@ class SensitiveDataDetector:
         self.direct_patterns = {
             "Email Address": r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}",
             "Company name": r"\b[A-Z][a-z]+\s[A-Z][a-z]+(Co|Corp|Company|Inc|Ltd)\b",
+            "Company name": r"\bCompany Name:\n-?\W?[a-zA-Z\s]*\n\b",
         }
 
         self.indirect_patterns = {

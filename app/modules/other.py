@@ -6,7 +6,7 @@ import helpers
 def read_text_from_file(file_path):
     """Reads and returns the content of a file using the appropriate encoding."""
     
-    with open(file_path, 'rb') as file:
+    with open(str(file_path), 'rb') as file:
         rawdata = file.read()
         
     encoding_detected = chardet.detect(rawdata)['encoding']
@@ -24,9 +24,9 @@ def read_text_from_file(file_path):
 
     # If we've tried all encodings and none worked, then the file might contain binary or non-textual data
     return "Unable to decode the file. It may contain non-textual data."
-def is_sensitive(filename, detector):
-    # here: produce list of lines  from html 
 
+
+def is_sensitive(filename, detector):
     doc = read_text_from_file(filename)
 
     counter = np.array(detector.is_sensitive(doc))
