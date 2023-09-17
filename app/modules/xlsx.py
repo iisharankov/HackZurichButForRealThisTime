@@ -2,7 +2,7 @@
 
 import pandas as pd
 import re
-import csv
+from modules import csv
 
 from const import *
 

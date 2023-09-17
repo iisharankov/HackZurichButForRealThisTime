@@ -2,6 +2,8 @@
 import chardet
 import numpy as np
 
+import helpers
+
 def read_text_from_file(file_path):
     """Reads and returns the content of a file using the appropriate encoding."""
     
@@ -28,14 +30,4 @@ def is_sensitive(filename, detector):
     doc = read_text_from_file(filename)
 
     counter = np.array(detector.is_sensitive(doc))
-    if (counter[0] > 0) or (counter[1]+counter[2] > 1) or (counter[1]+counter[3] > 1):
-        return True 
-
-    return False
-
-
-# return detector.is_sensitive(text)
-# Example
-# file_path = "/content/again-tax-environment.md"
-# extracted_text = read_text_from_file(file_path)
-# print(extracted_text)
+    return helpers.check_valid_sensitivities(counter)
