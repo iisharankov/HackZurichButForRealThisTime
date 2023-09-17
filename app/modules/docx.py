@@ -4,6 +4,8 @@ import numpy as np
 import subprocess
 import sys
 
+import helpers
+
 def is_sensitive(filename, detector):
     # here: produce list of lines  from html 
     cmd = ["sh", "-c",
@@ -16,7 +18,4 @@ def is_sensitive(filename, detector):
     result.check_returncode()
 
     counter = np.array(detector.is_sensitive(result.stdout))
-    if (counter[0] > 0) or (counter[1]+counter[2] > 1) or (counter[1]+counter[3] > 1):
-        return True 
-
-    return False
+    return helpers.check_valid_sensitivities(counter)

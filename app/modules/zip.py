@@ -30,23 +30,6 @@ def is_sensitive(filename, detector):
     # here: produce list of lines  from html 
 
     doc = process_zip(filename)
-    counter = np.array([0,0,0,0])
 
-    for line in doc:
-        new_count = np.array(detector.is_sensitive(line))
-        counter += new_count 
-        if (counter[0] > 0) or (counter[1]+counter[2] > 1) or (counter[1]+counter[3] > 1):
-            return True 
-
-    return False
-
-# return detector.is_sensitive(text)
-# # Example
-# zip_file_path = "/content/budget-game-their.zip"
-# text_content = extract_text_from_zip(zip_file_path)
-# if text_content:
-#     print(text_content)
-# else:
-#     print("No text file found inside the zip (and nested zips).")
-
-
+    conuter = np.array(detector.is_sensitive(doc))
+    return helpers.check_valid_sensitivities(counter)

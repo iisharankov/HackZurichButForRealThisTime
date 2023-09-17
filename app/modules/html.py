@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 import re
 import numpy as np
 
+import helpers
+
 def is_sensitive(filename, detector):
 
     with open(filename, "r", encoding="utf-8") as file:
@@ -14,7 +16,4 @@ def is_sensitive(filename, detector):
     
 
     counter = np.array(detector.is_sensitive(" ".join(text)))
-    if (counter[0] > 0) or (counter[1]+counter[2] > 1) or (counter[1]+counter[3] > 1):
-        return True 
-
-    return False
+    return helpers.check_valid_sensitivities(counter)
