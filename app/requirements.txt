@@ -8,7 +8,10 @@ pytesseract
 tesseract
 spacy 
 phonenumbers
-easyocr
+# easyocr
+chardet
+extract_msg
+PyPDF2
 beautifulsoup4
 python-docx==0.8.11
 # exceptions 
