@@ -108,11 +108,7 @@ class SensitiveDataDetector:
         if regex_result:
             return True
 
-<<<<<<< HEAD
-        return [self.rsa_flag, self.direct_flag, self.indirect_flag, self.potential_indirect_flag] 
-=======
         print(self.rsa_flag, self.direct_flag, self.indirect_flag, self.potential_indirect_flag)
         return [self.rsa_flag, self.direct_flag, self.indirect_flag, self.potential_indirect_flag] 
 
 
->>>>>>> eb6d26362eec4fbe2a23675b76918a9f51e346e7
