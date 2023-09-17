@@ -114,5 +114,3 @@ class SensitiveDataDetector:
         #     return True
 
         return [self.rsa_flag, self.direct_flag, self.indirect_flag, self.potential_indirect_flag] 
-
-
